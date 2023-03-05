@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomAnalogClock">
+        <attr name="clockBackground" format="color"/>
+        <attr name="clockColor" format="color"/>
+        <attr name="centerColor" format="color"/>
+        <attr name="divisionsColor" format="color"/>
+        <attr name="numeralColor" format="color"/>
+        <attr name="showDivisions" format="boolean"/>
+        <attr name="hourHandThickness" format="integer"/>
+        <attr name="hourHandLength" format="integer"/>
+        <attr name="hourHandColor" format="color"/>
+        <attr name="minutesHandThickness" format="integer"/>
+        <attr name="minutesHandLength" format="integer"/>
+        <attr name="minutesHandColor" format="color"/>
+        <attr name="secondsHandThickness" format="integer"/>
+        <attr name="secondsHandLength" format="integer"/>
+        <attr name="secondsHandColor" format="color"/>
+    </declare-styleable>
+</resources>
