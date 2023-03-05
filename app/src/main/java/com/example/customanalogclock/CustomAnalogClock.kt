@@ -79,7 +79,7 @@ class CustomAnalogClock @JvmOverloads constructor(
         val superState = super.onSaveInstanceState()!!
         val savedState = SavedState(superState)
 
-        with(savedState){
+        with(savedState) {
             backgroundClockColorState = backgroundClockColor
             clockColorState = clockColor
             centerColorState = centerColor
@@ -311,7 +311,7 @@ class CustomAnalogClock @JvmOverloads constructor(
         canvas.drawCircle(width / 2, height / 2, radius / 25f, paint)
     }
 
-    fun changeHandsColor(color: Int){
+    fun changeHandsColor(color: Int) {
         hourHandColor = color
         minutesHandColor = color
         secondsHandColor = color

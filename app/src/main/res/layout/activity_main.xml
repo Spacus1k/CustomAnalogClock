@@ -13,19 +13,19 @@
 
         <Button
             android:id="@+id/button"
-            android:text="change style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            android:text="change style" />
 
         <com.example.customanalogclock.CustomAnalogClock
             android:id="@+id/first_clock"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="250dp" />
 
         <com.example.customanalogclock.CustomAnalogClock
             android:id="@+id/second_clock"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="250dp" />
     </LinearLayout>
 </ScrollView>
