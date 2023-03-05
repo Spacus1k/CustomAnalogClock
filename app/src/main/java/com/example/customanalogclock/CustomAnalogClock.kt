@@ -8,9 +8,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Parcelable
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
-import com.example.customanalogclock.databinding.ClockLayoutBinding
 
 class CustomAnalogClock @JvmOverloads constructor(
     context: Context,
@@ -23,8 +21,6 @@ class CustomAnalogClock @JvmOverloads constructor(
         private val HOURS_RANGE = (1..12)
         private val MINUTES_RANGE = (1..60)
     }
-
-    private val binding: ClockLayoutBinding
 
     private var height: Float = 0f
     private var width: Float = 0f
@@ -60,9 +56,6 @@ class CustomAnalogClock @JvmOverloads constructor(
     var secondsLengthCoeff: Int = 0
 
     init {
-        val inflater = LayoutInflater.from(context)
-        //inflater.inflate(R.layout.clock_layout, this, true)
-        binding = ClockLayoutBinding.bind(this)
         initAttrs(attrs, defStyleAttr, defStyleRes)
     }
 
@@ -136,7 +129,6 @@ class CustomAnalogClock @JvmOverloads constructor(
         }
     }
 
-    //TODO
     private fun initAttrs(attrs: AttributeSet?, defStyleAttr: Int = 0, defStyleRes: Int) {
         if (attrs == null) return
         val typedArray = context.theme.obtainStyledAttributes(

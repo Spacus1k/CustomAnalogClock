@@ -4,34 +4,40 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.customanalogclock.databinding.ActivityMainBinding
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var _binding: ActivityMainBinding? = null
-    val binding get() = _binding!!
+    private val binding: ActivityMainBinding by lazy(LazyThreadSafetyMode.NONE) {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.button.setOnClickListener{
-            binding.firstClock.secondsHandColor = Color.RED
-            binding.firstClock.backgroundClockColor = Color.DKGRAY
-            binding.firstClock.minutesHandThicknessCoeff = 5
-            binding.firstClock.minutesHandLengthCoeff = 10
-            binding.firstClock.hourHandLengthCoeff = 10
-
-            binding.secondClock.clockColor = Color.BLACK
-            binding.secondClock.backgroundClockColor = Color.DKGRAY
-            binding.secondClock.numeralColor = Color.WHITE
-            binding.secondClock.changeHandsColor(Color.WHITE)
-            binding.secondClock.divisionsColor = Color.WHITE
-            binding.secondClock.centerColor = Color.WHITE
+        binding.button.setOnClickListener {
+            changeStyle()
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    private fun changeStyle() {
+        binding.firstClock.secondsHandColor = getRandomColor()
+        binding.firstClock.backgroundClockColor = getRandomColor()
+        binding.firstClock.minutesHandThicknessCoeff = 5
+        binding.firstClock.minutesHandLengthCoeff = 10
+        binding.firstClock.hourHandLengthCoeff = 10
+
+        binding.secondClock.clockColor = getRandomColor()
+        binding.secondClock.backgroundClockColor = getRandomColor()
+        binding.secondClock.numeralColor = getRandomColor()
+        binding.secondClock.changeHandsColor(getRandomColor())
+        binding.secondClock.divisionsColor = getRandomColor()
+        binding.secondClock.centerColor = getRandomColor()
+    }
+
+    private fun getRandomColor(): Int {
+        val random = Random();
+        return Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256))
     }
 }
