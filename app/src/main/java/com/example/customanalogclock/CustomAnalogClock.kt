@@ -6,10 +6,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import com.example.customanalogclock.databinding.ClockLayoutBinding
 
 class CustomAnalogClock @JvmOverloads constructor(
@@ -37,27 +37,27 @@ class CustomAnalogClock @JvmOverloads constructor(
     private val paint get() = _paint!!
     private var isInit = false
 
-    private var backgroundColor = Color.WHITE
-    private var clockColor = Color.BLACK
-    private var centerColor = Color.BLACK
-    private var numeralColor = Color.BLACK
+    var backgroundClockColor = Color.WHITE
+    var clockColor = Color.BLACK
+    var centerColor = Color.BLACK
+    var numeralColor = Color.BLACK
 
-    private var divisionsColor = Color.BLACK
-    private var isShowDivisions: Boolean = true
+    var divisionsColor = Color.BLACK
+    var isShowDivisions: Boolean = true
 
-    private val handsHelper = HandsHelper()
+    val handsHelper = HandsHelper()
 
-    private var hourHandColor = Color.BLACK
-    private var hourHandThicknessCoeff: Int = 0
-    private var hourHandLengthCoeff: Int = 0
+    var hourHandColor = Color.BLACK
+    var hourHandThicknessCoeff: Int = 0
+    var hourHandLengthCoeff: Int = 0
 
-    private var minutesHandColor = Color.BLACK
-    private var minutesHandThicknessCoeff: Int = 0
-    private var minutesHandLengthCoeff: Int = 0
+    var minutesHandColor = Color.BLACK
+    var minutesHandThicknessCoeff: Int = 0
+    var minutesHandLengthCoeff: Int = 0
 
-    private var secondsHandColor = Color.BLACK
-    private var secondsThicknessCoeff: Int = 0
-    private var secondsLengthCoeff: Int = 0
+    var secondsHandColor = Color.BLACK
+    var secondsThicknessCoeff: Int = 0
+    var secondsLengthCoeff: Int = 0
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -66,6 +66,77 @@ class CustomAnalogClock @JvmOverloads constructor(
         initAttrs(attrs, defStyleAttr, defStyleRes)
     }
 
+    override fun onDraw(canvas: Canvas?) {
+        if (!isInit) {
+            initClock()
+        }
+        canvas?.let {
+            it.drawColor(Color.TRANSPARENT)
+            drawBackground(it)
+            drawCircle(it)
+            drawNumerals(it)
+            if (isShowDivisions) drawDivisions(it)
+            drawHands(it)
+            drawCenter(it)
+        }
+        invalidate()
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        val superState = super.onSaveInstanceState()!!
+        val savedState = SavedState(superState)
+
+        with(savedState){
+            backgroundClockColorState = backgroundClockColor
+            clockColorState = clockColor
+            centerColorState = centerColor
+            numeralColorState = numeralColor
+            divisionsColorState = divisionsColor
+            isShowDivisionsState = isShowDivisions
+
+            hourHandColorState = hourHandColor
+            hourHandThicknessCoeffState = hourHandThicknessCoeff
+            hourHandLengthCoeffState = hourHandLengthCoeff
+
+            minutesHandColorState = minutesHandColor
+            minutesHandThicknessCoeffState = minutesHandThicknessCoeff
+            minutesHandLengthCoeffState = minutesHandLengthCoeff
+
+            secondsHandColorState = secondsHandColor
+            secondsThicknessCoeffState = secondsThicknessCoeff
+            secondsLengthCoeffState = secondsLengthCoeff
+        }
+        savedState.secondsHandColorState = secondsHandColor
+
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        val savedState = state as SavedState
+        super.onRestoreInstanceState(savedState.superState)
+        with(savedState) {
+            backgroundClockColor = backgroundClockColorState
+            clockColor = clockColorState
+            centerColor = centerColorState
+            numeralColor = numeralColorState
+            divisionsColor = divisionsColorState
+            isShowDivisions = isShowDivisionsState
+
+            hourHandColor = hourHandColorState
+            hourHandThicknessCoeff = hourHandThicknessCoeffState
+            hourHandLengthCoeff = hourHandLengthCoeffState
+
+            minutesHandColor = minutesHandColorState
+            minutesHandThicknessCoeff = minutesHandThicknessCoeffState
+            minutesHandLengthCoeff = minutesHandLengthCoeffState
+
+            secondsHandColor = secondsHandColorState
+            secondsThicknessCoeff = secondsThicknessCoeffState
+            secondsLengthCoeff = secondsLengthCoeffState
+        }
+    }
+
+    //TODO
     private fun initAttrs(attrs: AttributeSet?, defStyleAttr: Int = 0, defStyleRes: Int) {
         if (attrs == null) return
         val typedArray = context.theme.obtainStyledAttributes(
@@ -103,7 +174,7 @@ class CustomAnalogClock @JvmOverloads constructor(
 
     private fun initColorsAttrs(customAttrs: TypedArray) {
         with(customAttrs) {
-            backgroundColor =
+            backgroundClockColor =
                 getColor(R.styleable.CustomAnalogClock_clockBackground, Color.WHITE)
             clockColor =
                 getColor(R.styleable.CustomAnalogClock_clockColor, Color.BLACK)
@@ -122,22 +193,6 @@ class CustomAnalogClock @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        if (!isInit) {
-            initClock()
-        }
-        canvas?.let {
-            it.drawColor(Color.TRANSPARENT)
-            drawBackground(it)
-            drawCircle(it)
-            drawNumerals(it)
-            if (isShowDivisions) drawDivisions(it)
-            drawHands(it)
-            drawCenter(it)
-        }
-        invalidate()
-    }
-
     private fun initClock() {
         height = getHeight().toFloat()
         width = getWidth().toFloat()
@@ -152,7 +207,7 @@ class CustomAnalogClock @JvmOverloads constructor(
     private fun drawBackground(canvas: Canvas) {
         with(paint) {
             reset()
-            color = backgroundColor
+            color = backgroundClockColor
             canvas.drawCircle(width / 2, height / 2, radius + padding / 2, this)
         }
     }
@@ -220,7 +275,8 @@ class CustomAnalogClock @JvmOverloads constructor(
         }
 
         val handCoordinates = handsHelper.getHandCoordinates(width, height, handLength, loc, false)
-        val backHandCoordinates = handsHelper.getHandCoordinates(width, height, handLength / 4, loc, true)
+        val backHandCoordinates =
+            handsHelper.getHandCoordinates(width, height, handLength / 4, loc, true)
         canvas.drawLine(
             handCoordinates.startPoint.x,
             handCoordinates.startPoint.y,
@@ -261,5 +317,11 @@ class CustomAnalogClock @JvmOverloads constructor(
         paint.color = centerColor
         paint.isAntiAlias = true
         canvas.drawCircle(width / 2, height / 2, radius / 25f, paint)
+    }
+
+    fun changeHandsColor(color: Int){
+        hourHandColor = color
+        minutesHandColor = color
+        secondsHandColor = color
     }
 }
