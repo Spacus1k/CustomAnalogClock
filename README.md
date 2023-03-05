@@ -1,20 +1,4 @@
-Реализация CustomView в виде аналоговых часов 
+##Реализация CustomView в виде аналоговых часов 
 
-Также доабвлена возможность менять атрибуты.
-
-Доабвленные атрибуты:
--clockBackground
--clockColor
--centerColor
--divisionsColor
--numeralColor
--showDivisions
--hourHandThickness
--hourHandLength
--hourHandColor
--minutesHandThickness
--minutesHandLength
--minutesHandColor"
--secondsHandThickness
--secondsHandLength
--secondsHandColor
+Также добавлена возможность менять атрибуты как динамически, так и через XML.
+Реализовано сохранение состояния
